@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en"> 
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> <%= forum.field %> - Awards Forum</title>
+  </head>
+  <body>
+    <h1><%= forum.field %></h1>
+    <h2>Table of Embedded Topics</h2>
+    <!-- admin only -->
+    <form action="/forums/<%=forum._id%>?_method=DELETE" method="post"> <!-- updated ejs if i go from id to field-->
+        <button type="submit">Delete <%= forum.field %></button>
+    </form>
+    <a href="/forums">Back to Forums</a>
+  </body>
+</html>

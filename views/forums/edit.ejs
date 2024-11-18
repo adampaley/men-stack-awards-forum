@@ -1,0 +1,24 @@
+<!-- Only should be accessible to admin -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Forum - Awards Forum</title>
+  </head>
+  <body>
+    <h1>Edit a Forum</h1>
+    <form action="/forums/<%=forum._id%>?_method=PUT" method="POST">
+        <div>
+            <label for="field">Field:</label>
+            <input type="text" name="field" id="field" value="<%= forum.field %>" required>
+        </div>
+        <div>
+            <label for="description">A brief description:</label>
+            <textarea name="description" id="description" required maxLength="100"></textarea>
+        </div>
+        <button type="submit">Update</button>
+    </form>
+    <a href="/forums">Back to Forums</a>
+  </body>
+</html>
