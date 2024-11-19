@@ -8,10 +8,12 @@
   <body>
     <h1><%= forum.field %></h1>
     <h2>Table of Embedded Topics</h2>
-    <!-- admin only -->
-    <form action="/forums/<%=forum._id%>?_method=DELETE" method="post"> <!-- updated ejs if i go from id to field-->
+    <% if (user && user.isAdmin) { %>
+      <form action="/forums/<%=forum._id%>?_method=DELETE" method="post"> <!-- updated ejs if i go from id to field-->
         <button type="submit">Delete <%= forum.field %></button>
-    </form>
+      </form>
+      <a href="/forums/<%= forum._id %>/edit">Edit <%= forum.field %></a>
+    <% } %>
     <a href="/forums">Back to Forums</a>
   </body>
 </html>

@@ -7,6 +7,15 @@
   </head>
   <body>
     <!-- partial template to have odds at top of page -->
+    <% if (user) { %>
+      <p>
+        <a href="/auth/logout">Logout</a>
+      </p>
+    <% } else { %>
+    <p>
+      <a href="/auth/register">Register</a> <a href="/auth/log-in">Log In</a>
+    </p>
+    <% } %>
     <h1>Awards Forum:</h1>
     <p>Predict Races in Entertainments Largest Fields</p>
     <a href="/forums">Forums</a>

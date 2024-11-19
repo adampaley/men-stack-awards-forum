@@ -1,4 +1,3 @@
-<!-- Only should be accessible to admin -->
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -15,7 +14,7 @@
         </div>
         <div>
             <label for="description">A brief description:</label>
-            <textarea name="description" id="description" required maxLength="100"></textarea>
+            <textarea name="description" id="description" placeholder="<%= forum.description %>" required maxLength="100"></textarea>
         </div>
         <button type="submit">Update</button>
     </form>

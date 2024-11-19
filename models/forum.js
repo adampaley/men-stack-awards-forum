@@ -1,9 +1,9 @@
-// require
+// import
 const mongoose = require("mongoose")
 
 // schema
 const forumSchema = new mongoose.Schema({
-    field: { type: String, required: true, trim: true },
+    field: { type: String, required: true, unique: true, trim: true }, // need to catch error for if a field is repeated, will generate an error because of "unique"
     description: { type: String, required: true, trim: true },
     numTopics: { type: Number, default: 0 },
     numPosts: { type: Number, default: 0 },
