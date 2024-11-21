@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Start a New Discussion - Awards Forum</title>
+  </head>
+  <body>
+      <h1>Create a Thread</h1>
+      <form action="/forums/<%= forum %>" method="post">
+        <div>
+            <label for="title">Discussion Topic:</label>
+            <input type="text" name="title" id="title" required>
+        </div>
+        <input type="hidden" name="createdBy" value="<%= username %>">
+        <button type="submit">Launch</button>
+      </form> 
+    <a href="/forums/<%= forum %>">Back to Discussions</a>
+  </body>
+</html>

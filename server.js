@@ -5,6 +5,7 @@ const mongoose = require("mongoose")
 const app = express()
 const methodOverride = require("method-override")
 const morgan = require("morgan")
+// const topicsController = require('./controllers/topics.js')
 
 const port = process.env.PORT ? process.env.PORT : "3000" // set port to env variable or defaualt to 3000
 const authController = require("./controllers/auth.js")
@@ -21,7 +22,11 @@ mongoose.connection.on("connected", () => {
 })
 
 // imports
-const Forum = require("./models/forum.js")
+const User = require('./models/user.js')
+const { Forum, Topic, Post  } = require("./models/forum.js")
+
+// const Prediction = require("./models/prediction.js")
+// const categories = require("./data/categories2024.js")
 
 // middleware
 app.use(express.urlencoded({ extended: false})) // parse URL-encoded data from forms
@@ -39,16 +44,36 @@ app.use( // integrate session management
 )
 app.use(passUserToView) // passes user info to all templates
 
-// forum routes
-// GET /    //landing page
+
+// landing page
+// GET /
 app.get("/", async (req, res) => {
-    res.render("index.ejs");
+    // // once Best Picture is started, change this to findById
+    // const predictions = await Prediction.find()
+    // const contenderPoints = {}
+
+    // // aggregate points
+    // predictions.forEach(prediction => {
+    //     prediction.contenders.forEach(contender => {
+    //         contenderPoints[contender.name] = (contenderPoints[contender.name] || 0) + contender.points
+    //     })
+    // })
+
+    // // sort in descending order
+    // const sortedContenders = Object.keys(contenderPoints).sort((a,b) => contenderPoints[b] - contenderPoints[a])
+
+    res.render("index.ejs"); //{ predictions, contenderPoints}
 })
 
+// forum routes
+// controllers
 app.use("/auth", authController)
+// app.use('/forums/:forumId/topics', topicsController)
+
+// forums // consider moving to a controller
 
 // GET /forums
-app.get("/forums", isLoggedIn, async (req, res) => {
+app.get("/forums", async (req, res) => {
     const allForums = await Forum.find()
     res.render("forums/index.ejs", { forums: allForums })
 })
@@ -60,6 +85,9 @@ app.get("/forums/new", isAdmin, (req, res) => {
 
 // POST /forums
 app.post("/forums", async (req, res) => {
+    if (!req.body.field) {
+        return res.send("Forum field needs text")
+    }
     // case-insensitive check if forum topic already exists using reg ex
     const fieldInDatabase = await Forum.findOne({ 
         field: { $regex: new RegExp(`^${req.body.field}$`, 'i') } 
@@ -72,7 +100,171 @@ app.post("/forums", async (req, res) => {
     res.redirect("forums")
 })
 
+// GET /forums/:forumId // also index route for Topics
+app.get("/forums/:forumId", async (req, res) => { // consider making the parameter related to forum name once 1) duplicates are prevented and 2) admin authority required
+    const foundForum = await Forum.findById(req.params.forumId)
+    res.render("forums/show.ejs", { forum: foundForum, topics: foundForum.topics })
+})
 
+// DELETE /forums/:forumId
+app.delete("/forums/:forumId", async (req, res) => { // consider making the parameter related to forum name once 1) duplicates are prevented and 2) admin authority required
+    await Forum.findByIdAndDelete(req.params.forumId)
+    res.redirect("/forums")
+})
+
+// GET /forums/:forumId/edit
+app.get("/forums/:forumId/edit", isAdmin, async (req, res) => { // consider making the parameter related to forum name once 1) duplicates are prevented and 2) admin authority required
+    const foundForum = await Forum.findById(req.params.forumId)
+    res.render("forums/edit.ejs", { forum: foundForum })
+})
+
+// PUT /forums/:forumId
+app.put("/forums/:forumId", async (req, res) => { // consider making the parameter related to forum name once 1) duplicates are prevented and 2) admin authority required
+    await Forum.findByIdAndUpdate(req.params.forumId, req.body)
+    res.redirect(`/forums/${req.params.forumId}`)
+})
+
+// topics
+
+// // GET /forums/:forumId // index
+// app.get("/forums/:forumId", async (req, res) => {
+//     const forumId = req.body.forumId
+//     const allTopics = await Forum.findById(forumId)
+
+//     res.render("forums/show.ejs", { forums: allForums })
+// })
+
+// topics
+// GET /forums/:forumId/new
+app.get("/forums/:forumId/new", isLoggedIn, async (req, res) => {
+    const forum = req.params.forumId
+    const currentUser = await User.findById(req.session.user._id);
+    username = currentUser.username
+    res.render("topics/new.ejs", { forum, username })
+})
+
+
+// POST /forums/:forumsId
+app.post("/forums/:forumId", isLoggedIn, async (req, res) => {
+    try {
+        const currentForum = await Forum.findById(req.params.forumId)
+
+// case-insensitive check if forum topic already exists using reg ex
+//     const titleInDatabase = await Topic.findOne({ 
+//         title: { $regex: new RegExp(`^${req.body.field}$`, 'i') } 
+//     })
+//     if (titleInDatabase) {
+//         return res.send("Topic already exists.")
+//     }
+
+        currentForum.topics.push(req.body)
+        currentForum.numTopics = currentForum.topics.length;
+        currentForum.numPosts = currentForum.topics.reduce((count, topic) => count + topic.posts.length, 0)
+        await currentForum.save()
+        res.redirect(`/forums/${forumId}`
+        )
+    } catch (error) {
+        console.log(error)
+        res.redirect(`/forums/${req.params.forumId}`)
+    }
+})
+
+// GET /forums/:forumId/:topicId
+app.get("/forums/:forumId/:topicId", async (req, res) => {
+    try {
+        const currentForum = await Forum.findById(req.params.forumId)
+        const currentTopic = currentForum.topics.id(req.params.topicId)
+        res.render("topics/show.ejs", {
+            forum: currentForum, 
+            topic: currentTopic,
+        })
+    } catch (error) {
+        console.log(error)
+        res.redirect(`/forums/${req.params.forumId}`)
+    }
+})
+
+// DELETE /forums/:forumId/:topicId
+app.delete("/forums/:forumId/:topicId", async (req, res) => {
+    try {
+        const currentForum = await Forum.findById(req.params.forumId)
+        const currentTopic = currentForum.topics.id(req.params.topicId).deleteOne()
+        await currentForum.save()
+        res.redirect(`/forums/${req.params.forumId}`)
+    } catch (error) {
+        console.log(error)
+        res.redirect(`/forums/${req.params.forumId}`)
+    }
+})
+
+// GET /forums/:forumId/:topicId/edit
+app.get("/forums/:forumId/:topicId/edit", isLoggedIn, async (req, res) => {
+    try {
+        const currentForum = await Forum.findById(req.params.forumId)
+        const currentUser = await User.findById(req.session.user._id);
+        username = currentUser.username
+        const currentTopic = currentForum.topics.id(req.params.topicId)
+        res.render("topics/edit.ejs", {
+            forumId: req.params.forumId,
+            topic: currentTopic,
+            username
+        })
+    } catch (error) {
+        console.log(error)
+        res.redirect(`/forums/${req.params.forumId}`)
+    }
+})
+
+// PUT /forums/:forumId/:topicId
+app.put("/forums/:forumId/:topicId", async (req, res) => {
+    try {
+        const currentForum = await Forum.findById(req.params.forumId)
+        const currentTopic = currentForum.topics.id(req.params.topicId)
+        currentTopic.set(req.body)
+        await currentForum.save()
+        res.redirect(`/forums/${req.params.forumId}/${req.params.topicId}`)
+    } catch (error) {
+        console.log(error)
+        res.redirect(`/forums/${req.params.forumId}`)
+    }
+})
+
+// // predictions // consider moving to controllers
+// // GET /predictions
+// app.get("/predictions", async (req, res) => {
+//     const predictions = await Prediction.find()
+//     const contenderPoints = {}
+
+//     // aggregate points
+//     predictions.forEach(prediction => {
+//         prediction.contenders.forEach((contender) => {
+//             contenderPoints[contender.name] = (contenderPoints[contender.name] || 0) + contender.points
+//         })
+//     })
+
+//     // sort in descending order
+//     const sortedContenders = Object.entries(contenderPoints).map(([name, points]) => ({name, points})).sort((a,b) => contenderPoints[b] - contenderPoints[a])
+
+//     res.render("predictions/index.ejs", { predictions, sortedContenders});
+// })
+
+// // GET /predictions/new
+// app.get("/predictions/new", isLoggedIn, async (req, res) => {
+//     const user = await User.findById(req.session.user._id)
+//     res.render("predictions/new.ejs", { categories, user })
+// })
+
+// // POST /predictions
+// app.post("/predictions", isLoggedIn, async (req, res) => {
+//     const userId = req.session.user._id
+//     const category = "Best Picture"
+
+//     // create prediction
+//     await Prediction.create({category, user: userId})
+
+//     res.redirect("predictions")
+// })
+/*
 // GET /forums/:forumId
 app.get("/forums/:forumId", async (req, res) => { // consider making the parameter related to forum name once 1) duplicates are prevented and 2) admin authority required
     const foundForum = await Forum.findById(req.params.forumId)
@@ -96,9 +288,7 @@ app.put("/forums/:forumId", async (req, res) => { // consider making the paramet
     await Forum.findByIdAndUpdate(req.params.forumId, req.body)
     res.redirect(`/forums/${req.params.forumId}`)
 })
-
-// prediction routes
-
+*/
 
 // listen
 app.listen(3000, () => {

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Predictions - Awards Forum</title>
+  </head>
+  <body>
+    <h1>Predictions for All Top Oscar Races</h1>
+    <ul>
+        <% sortedContenders.forEach((contender) => { %>
+            <li>
+                <strong><%= contender.name %> points</strong>
+            </li>
+        <% }) %>
+    </ul>
+    <!-- href to new page -->
+     <button><a href="predictions/new">Predict or Update</a></button>
+  </body>
+</html>

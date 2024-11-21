@@ -7,7 +7,32 @@
   </head>
   <body>
     <h1><%= forum.field %></h1>
-    <h2>Table of Embedded Topics</h2>
+    <h2>Topics</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Topic</th>
+                <th>Created By</th>
+                <th>Posts</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% topics.forEach(topic => { %>
+                <tr>
+                    <td>
+                        <h2><a href="/forums/<%= forum._id%>/<%=topic._id%>"><%= topic.title %></a></h2> <!-- consider making the parameter related to forum name once 1) duplicates are prevented and 2) admin authority required, also make sure it is lowercase-->
+                    </td>
+                    <td><%= topic.createdBy %></td>
+                    <td><%= topic.numPosts %></td>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
+    <% if (user) { %>
+        <p>
+          <a href="/forums/<%=forum._id%>/new">Add New Topic</a>
+        </p>
+    <% } %>
     <% if (user && user.isAdmin) { %>
       <form action="/forums/<%=forum._id%>?_method=DELETE" method="post"> <!-- updated ejs if i go from id to field-->
         <button type="submit">Delete <%= forum.field %></button>

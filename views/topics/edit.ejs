@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editing <%= topic.title %> - Awards Watch</title>
+  </head>
+  <body>
+    <h1>Edit <%= topic.title %></h1>      
+      <form action="/forums/<%= forumId %>/<%= topic._id %>?_method=PUT" method="POST">
+        <div>
+            <label for="title">Discussion Topic:</label>
+            <input type="text" name="title" id="title" value="<%= topic.title %>" required>
+        </div>
+        <input type="hidden" name="createdBy" value="<%= username %>">
+        <button type="submit">Launch</button>
+      </form> 
+    <a href="/forums/<%= forumId %>">Back to Discussions</a>
+  </body>
+</html>

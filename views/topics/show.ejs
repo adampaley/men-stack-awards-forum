@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= topic.title %></title>
+  </head>
+  <body>
+    <h1><%= topic.title %></h1>
+    <p>notes on posts</p>
+    <% if ((user && user.username === topic.createdBy) || user && user.isAdmin) { %>
+    <a href="/forums/<%=forum._id%>/<%= topic._id%>/edit">
+        Edit Topic
+    </a>
+    <form action="/forums/<%=forum._id%>/<%= topic._id%>?_method=DELETE" method="POST">
+        <button type="submit">Delete this topic</button>
+    </form>
+    <% } %>
+  </body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Your Prediction - Awards Forum</title>
+  </head>
+  <body>
+    <h1>New Prediction</h1>
+    <form action="/predictions" method="POST">
+        <div>
+            <label for="contenders">Best Picture Contender:</label>
+            <input list="contender-list" id="contenders" name="contenders">
+
+            <datalist id="contender-list">
+                <option value="Blitz"></option>
+                <option value="The Brutalist"></option>
+                <option value="Challengers"></option>
+                <option value="A Complete Unknown"></option>
+                <option value="Conclave"></option>
+                <option value="Dune: Part Two"></option>
+                <option value="Emilia Perez"></option>
+                <option value="Gladiator II"></option>
+                <option value="I'm Still Here"></option>
+                <option value="Nickel Boys"></option>
+                <option value="Nosferatu"></option>
+                <option value="The Piano Lesson"></option>
+                <option value="A Real Pain"></option>
+                <option value="The Room Next Door"></option>
+                <option value="A Seed of the Sacred Fig"></option>
+                <option value="September 5"></option>
+                <option value="Sing Sing"></option>
+                <option value="The Subtance"></option>
+                <option value="Wicked"></option>
+                <option value="The Wild Robot></option>
+              </datalist>
+            <!-- <select name="category" id="category">
+                <% for (const category in categories) { %>
+                    <option value=""><%= category %></option>
+                <% }%>
+            </select> -->
+        </div>
+        <div>
+            <h3>Rank the top 5 contenders:</h3>
+            <label for="rank">Rank:</label>
+            <input type="number" name="rank" id="rank"  min="1" max="5">
+            <!-- <% categories[Object.keys(categories)[0]].forEach((contender, index) => { %>
+                <% if (index < 5) { %>
+                    <label for="rank<%= index + 1 %>"><%= contender %></label>
+                    <input type="number" name="rank<%= index + 1 %>" min="1" max="5" required><br>
+                <% } else { %>
+                    <label for="rank<%= index + 1 %>"><%= contender %></label>
+                    <input type="number" name="rank<%= index + 1 %>" min="1" max="5" ><br>
+                <% } %>
+            <% }) %> -->
+        </div>
+        <button type="submit">Submit Predictions</button>
+    </form>
+  </body>
+</html>
