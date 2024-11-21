@@ -4,7 +4,7 @@ const mongoose = require("mongoose")
 // schema
 const postSchema = new mongoose.Schema({
     content: { type: String, required: true},
-    postedBy: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true }
+    postedBy: { type: String, required: true}
 }, { timestamps: true 
 })
 

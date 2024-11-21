@@ -7,7 +7,41 @@
   </head>
   <body>
     <h1><%= topic.title %></h1>
-    <p>notes on posts</p>
+    <div>
+        <h2>Posts:</h2>
+        <% posts.forEach(post => { %>
+            <div>
+                <p><strong><%= post.postedBy %></strong> - <%= post.createdAt.toLocaleString() %></p>
+                <p><%= post.content %></p>
+                
+                <% if (user && (user.username === post.postedBy || user.isAdmin)) { %>
+                    <form action="/forums/<%= forum._id %>/<%= topic._id %>/<%= post._id %>?_method=DELETE" method="POST">
+                        <button type="submit">Delete Post</button>
+                    </form>
+                <% } %>
+            </div>
+        <% }) %>
+    </div>
+    <div>
+        <% if (currentPage > 1) { %>
+            <a href="/forums/<%= forum._id %>/<%= topic._id %>?page=<%= currentPage - 1 %>">Previous</a>
+        <% } %>
+
+        <span>Page <%= currentPage %> of <%= totalPages %></span>
+
+        <% if (currentPage < totalPages) { %>
+            <a href="/forums/<%= forum._id %>/<%= topic._id %>?page=<%= currentPage + 1 %>">Next</a>
+        <% } %>
+    </div>
+    <% if (user) { %>
+        <div>
+            <h2>Post a Reply:</h2>
+            <form action="/forums/<%= forum._id %>/<%= topic._id %>" method="POST">
+                <textarea name="content" required></textarea>
+                <button type="submit">Post</button>
+            </form>
+        </div>
+    <% } %>
     <% if ((user && user.username === topic.createdBy) || user && user.isAdmin) { %>
     <a href="/forums/<%=forum._id%>/<%= topic._id%>/edit">
         Edit Topic

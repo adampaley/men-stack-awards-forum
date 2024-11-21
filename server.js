@@ -5,7 +5,6 @@ const mongoose = require("mongoose")
 const app = express()
 const methodOverride = require("method-override")
 const morgan = require("morgan")
-// const topicsController = require('./controllers/topics.js')
 
 const port = process.env.PORT ? process.env.PORT : "3000" // set port to env variable or defaualt to 3000
 const authController = require("./controllers/auth.js")
@@ -62,13 +61,11 @@ app.get("/", async (req, res) => {
     // // sort in descending order
     // const sortedContenders = Object.keys(contenderPoints).sort((a,b) => contenderPoints[b] - contenderPoints[a])
 
-    res.render("index.ejs"); //{ predictions, contenderPoints}
+    res.render("index.ejs") //{ predictions, contenderPoints}
 })
 
-// forum routes
 // controllers
 app.use("/auth", authController)
-// app.use('/forums/:forumId/topics', topicsController)
 
 // forums // consider moving to a controller
 
@@ -125,20 +122,10 @@ app.put("/forums/:forumId", async (req, res) => { // consider making the paramet
 })
 
 // topics
-
-// // GET /forums/:forumId // index
-// app.get("/forums/:forumId", async (req, res) => {
-//     const forumId = req.body.forumId
-//     const allTopics = await Forum.findById(forumId)
-
-//     res.render("forums/show.ejs", { forums: allForums })
-// })
-
-// topics
 // GET /forums/:forumId/new
 app.get("/forums/:forumId/new", isLoggedIn, async (req, res) => {
     const forum = req.params.forumId
-    const currentUser = await User.findById(req.session.user._id);
+    const currentUser = await User.findById(req.session.user._id)
     username = currentUser.username
     res.render("topics/new.ejs", { forum, username })
 })
@@ -149,19 +136,19 @@ app.post("/forums/:forumId", isLoggedIn, async (req, res) => {
     try {
         const currentForum = await Forum.findById(req.params.forumId)
 
-// case-insensitive check if forum topic already exists using reg ex
-//     const titleInDatabase = await Topic.findOne({ 
-//         title: { $regex: new RegExp(`^${req.body.field}$`, 'i') } 
-//     })
-//     if (titleInDatabase) {
-//         return res.send("Topic already exists.")
-//     }
+        // case-insensitive check if forum topic already exists using reg ex
+        const newTopicTitle = req.body.title.trim()
+        const regex = new RegExp(`^${newTopicTitle}$`, 'i')  
+        const titleInDatabase = currentForum.topics.find(topic => regex.test(topic.title.trim()))
+        if (titleInDatabase) {
+            return res.send("Topic already exists")
+        }
 
         currentForum.topics.push(req.body)
-        currentForum.numTopics = currentForum.topics.length;
+        currentForum.numTopics = currentForum.topics.length
         currentForum.numPosts = currentForum.topics.reduce((count, topic) => count + topic.posts.length, 0)
         await currentForum.save()
-        res.redirect(`/forums/${forumId}`
+        res.redirect(`/forums/${req.params.forumId}`
         )
     } catch (error) {
         console.log(error)
@@ -174,9 +161,26 @@ app.get("/forums/:forumId/:topicId", async (req, res) => {
     try {
         const currentForum = await Forum.findById(req.params.forumId)
         const currentTopic = currentForum.topics.id(req.params.topicId)
+
+        // pagination
+        const postsPerPage = 10
+        const currentPage = parseInt(req.query.page) || 1
+        const skip = (currentPage - 1) * postsPerPage
+
+
+        // total pages
+        const totalPosts = currentTopic.posts.length
+        const totalPages = totalPosts > 0 ? Math.ceil(totalPosts / postsPerPage) : 1
+
+        // visible posts
+        const paginatedPosts = totalPosts > 0 ? currentTopic.posts.slice(skip, skip + postsPerPage) : []
+
         res.render("topics/show.ejs", {
             forum: currentForum, 
             topic: currentTopic,
+            posts: paginatedPosts,
+            currentPage,
+            totalPages,
         })
     } catch (error) {
         console.log(error)
@@ -201,7 +205,7 @@ app.delete("/forums/:forumId/:topicId", async (req, res) => {
 app.get("/forums/:forumId/:topicId/edit", isLoggedIn, async (req, res) => {
     try {
         const currentForum = await Forum.findById(req.params.forumId)
-        const currentUser = await User.findById(req.session.user._id);
+        const currentUser = await User.findById(req.session.user._id)
         username = currentUser.username
         const currentTopic = currentForum.topics.id(req.params.topicId)
         res.render("topics/edit.ejs", {
@@ -229,6 +233,83 @@ app.put("/forums/:forumId/:topicId", async (req, res) => {
     }
 })
 
+// post
+// POST /forums/:forumId/:topicId
+
+app.post("/forums/:forumId/:topicId", async (req, res) => {
+    try {
+        // something here is crashing the server
+        console.log('Forum ID:', req.params.forumId)
+        console.log('Topic ID:', req.params.topicId)
+        
+        const currentForum = await Forum.findById(req.params.forumId)
+        if (!currentForum) {
+            console.log('Forum not found')
+            return res.redirect(`/forums/${req.params.forumId}`)
+        }
+        const currentTopic = currentForum.topics.id(req.params.topicId)
+        if (!currentTopic) {
+            console.log('Topic not found')
+            return res.redirect("/forums")
+        }
+        const currentUser = await User.findById(req.session.user._id)
+        if (!currentUser) {
+            console.log('User not found or not logged in')
+            return res.redirect('/')
+        }
+        username = currentUser.username
+
+        const newPost = {
+            content: req.body.content,
+            postedBy: username
+        }
+
+        currentTopic.posts.push(newPost)
+        currentTopic.numPosts += 1
+        await currentForum.save()
+
+        res.redirect(`/forums/${req.params.forumId}/${req.params.topicId}`)
+    } catch (error) {
+        console.log(error)
+        res.redirect(`/forums/${req.params.forumId}/${req.params.topicId}`)
+    }
+})
+
+// DELETE /forums/:forumId/:topicId:/:postId
+app.delete("/forums/:forumId/:topicId/:postId", async (req, res) => {
+    try {
+        const currentForum = await Forum.findById(req.params.forumId)
+        const currentTopic = currentForum.topics.id(req.params.topicId)
+
+        const postToDelete = currentTopic.posts.id(req.params.postId)
+
+        if (!postToDelete) {
+            return res.status(404).send("Post not found")
+        }
+
+        const currentUser = await User.findById(req.session.user._id)
+        if (postToDelete.postedBy !== currentUser.username && !currentUser.isAdmin) {
+            return res.status(403).send("You are not authorized to delete this post.")
+        }
+
+        currentTopic.posts.pull(postToDelete)
+        currentTopic.numPosts -= 1 
+        await currentForum.save()
+
+        res.redirect(`/forums/${req.params.forumId}/${req.params.topicId}`)
+    } catch (error) {
+        console.log(error)
+        res.redirect(`/forums/${req.params.forumId}/${req.params.topicId}`)
+    }
+})
+
+// listen
+app.listen(3000, () => {
+    console.log(`Listening on port ${port}`)
+})
+
+
+
 // // predictions // consider moving to controllers
 // // GET /predictions
 // app.get("/predictions", async (req, res) => {
@@ -245,7 +326,7 @@ app.put("/forums/:forumId/:topicId", async (req, res) => {
 //     // sort in descending order
 //     const sortedContenders = Object.entries(contenderPoints).map(([name, points]) => ({name, points})).sort((a,b) => contenderPoints[b] - contenderPoints[a])
 
-//     res.render("predictions/index.ejs", { predictions, sortedContenders});
+//     res.render("predictions/index.ejs", { predictions, sortedContenders})
 // })
 
 // // GET /predictions/new
@@ -289,8 +370,3 @@ app.put("/forums/:forumId", async (req, res) => { // consider making the paramet
     res.redirect(`/forums/${req.params.forumId}`)
 })
 */
-
-// listen
-app.listen(3000, () => {
-    console.log(`Listening on port ${port}`)
-})

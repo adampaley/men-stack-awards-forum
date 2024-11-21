@@ -5,6 +5,6 @@ const isAdmin = (req, res, next) => {
         <p>Only admins allowed!</p>
         <p><a href="/forums">Back to Forums</a></p>
     `)
-};
+}
   
 module.exports = isAdmin
