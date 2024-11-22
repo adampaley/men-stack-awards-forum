@@ -1,11 +1,6 @@
-<!DOCTYPE html>
-<html lang="en"> 
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> <%= forum.field %> - Awards Forum</title>
-  </head>
-  <body>
+
+<%- include ('../partials/_header.ejs') %>
+
     <h1><%= forum.field %></h1>
     <h2>Topics</h1>
     <table>
@@ -40,5 +35,4 @@
       <a href="/forums/<%= forum._id %>/edit">Edit <%= forum.field %></a>
     <% } %>
     <a href="/forums">Back to Forums</a>
-  </body>
-</html>
+<%- include ('../partials/_footer.ejs') %>

@@ -1,11 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= topic.title %></title>
-  </head>
-  <body>
+<%- include ('../partials/_header.ejs') %>
     <h1><%= topic.title %></h1>
     <div>
         <h2>Posts:</h2>
@@ -50,5 +43,4 @@
         <button type="submit">Delete this topic</button>
     </form>
     <% } %>
-  </body>
-</html>
+<%- include ('../partials/_footer.ejs') %>

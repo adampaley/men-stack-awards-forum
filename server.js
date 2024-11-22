@@ -61,8 +61,8 @@ app.get("/", async (req, res) => {
 
     // // sort in descending order
     // const sortedContenders = Object.keys(contenderPoints).sort((a,b) => contenderPoints[b] - contenderPoints[a])
-
-    res.render("index.ejs") //{ predictions, contenderPoints}
+    const pageTitle = ""
+    res.render("index.ejs", { pageTitle }) //{ predictions, contenderPoints}
 })
 
 // controllers

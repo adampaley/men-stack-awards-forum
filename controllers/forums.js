@@ -13,12 +13,14 @@ const allowPagination = require('../middleware/pagination');
 // GET /forums
 router.get("/", async (req, res) => {
     const allForums = await Forum.find()
-    res.render("forums/index.ejs", { forums: allForums })
+    const pageTitle = "Forums - "
+    res.render("forums/index.ejs", { forums: allForums, pageTitle })
 })
 
 // GET /forums/new
 router.get("/new", isAdmin, (req, res) => {
-    res.render("forums/new.ejs")
+    const pageTitle = "Launch New Forum - "
+    res.render("forums/new.ejs", { pageTitle })
 })
 
 // POST /forums
@@ -41,7 +43,8 @@ router.post("/", async (req, res) => {
 // GET /forums/:forumId // also index route for Topics
 router.get("/:forumId", async (req, res) => { // consider making the parameter related to forum name once 1) duplicates are prevented and 2) admin authority required
     const foundForum = await Forum.findById(req.params.forumId)
-    res.render("forums/show.ejs", { forum: foundForum, topics: foundForum.topics })
+    const pageTitle = `${foundForum.field} - `
+    res.render("forums/show.ejs", { forum: foundForum, topics: foundForum.topics, pageTitle })
 })
 
 // DELETE /forums/:forumId
@@ -53,7 +56,8 @@ router.delete("/:forumId", async (req, res) => { // consider making the paramete
 // GET /forums/:forumId/edit
 router.get("/:forumId/edit", isAdmin, async (req, res) => { // consider making the parameter related to forum name once 1) duplicates are prevented and 2) admin authority required
     const foundForum = await Forum.findById(req.params.forumId)
-    res.render("forums/edit.ejs", { forum: foundForum })
+    const pageTitle = "Edit Forum - "
+    res.render("forums/edit.ejs", { forum: foundForum, pageTitle })
 })
 
 // PUT /forums/:forumId
@@ -68,7 +72,8 @@ router.get("/:forumId/new", isLoggedIn, async (req, res) => {
     const forum = req.params.forumId
     const currentUser = await User.findById(req.session.user._id)
     username = currentUser.username
-    res.render("topics/new.ejs", { forum, username })
+    const pageTitle = "Start a New Discussion - "
+    res.render("topics/new.ejs", { forum, username, pageTitle })
 })
 
 // POST /forums/:forumsId
@@ -101,6 +106,7 @@ router.get("/:forumId/:topicId", allowPagination, async (req, res) => {
     try {
         const currentForum = await Forum.findById(req.params.forumId)
         const currentTopic = currentForum.topics.id(req.params.topicId)
+        const pageTitle = `${currentTopic.title} - `
 
         res.render("topics/show.ejs", {
             forum: currentForum, 
@@ -108,6 +114,7 @@ router.get("/:forumId/:topicId", allowPagination, async (req, res) => {
             posts: res.locals.pagination.posts,
             currentPage: res.locals.pagination.currentPage,
             totalPages: res.locals.pagination.totalPages,
+            pageTitle,
         })
     } catch (error) {
         console.log(error)
@@ -135,10 +142,12 @@ router.get("/:forumId/:topicId/edit", isLoggedIn, async (req, res) => {
         const currentUser = await User.findById(req.session.user._id)
         username = currentUser.username
         const currentTopic = currentForum.topics.id(req.params.topicId)
+        const pageTitle = `Editing ${currentTopic.title} - `
         res.render("topics/edit.ejs", {
             forumId: req.params.forumId,
             topic: currentTopic,
-            username
+            username,
+            pageTitle
         })
     } catch (error) {
         console.log(error)

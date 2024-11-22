@@ -7,7 +7,8 @@ const bcrypt = require("bcrypt")
 // routes
 // GET /register
 router.get("/register", (req, res) => {
-    res.render("auth/register.ejs")
+    const pageTitle = "Register - "
+    res.render("auth/register.ejs", { pageTitle })
 })
 
 // POST /register 
@@ -50,7 +51,8 @@ router.post("/register", async (req, res) => {
 
 // GET /log-in
 router.get("/log-in", (req, res) => {
-    res.render("auth/log-in.ejs")
+    const pageTitle = "Log In - "
+    res.render("auth/log-in.ejs", { pageTitle })
 })
 
 // POST /log-in

@@ -1,11 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Log In - Awards Forum</title>
-  </head>
-  <body>
+<%- include ('../partials/_header.ejs') %>
     <h1>Sign in</h1>
     <form action="/auth/log-in" method="POST">
       <div>
@@ -18,5 +11,4 @@
       </div>
       <button type="submit">Log In</button>
     </form>
-  </body>
-</html>
+<%- include ('../partials/_footer.ejs') %>

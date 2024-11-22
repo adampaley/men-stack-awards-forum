@@ -1,11 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Launch New Forum - Awards Forum</title>
-  </head>
-  <body>
+<%- include ('../partials/_header.ejs') %>
       <h1>Launch a New Forum</h1>
       <form action="/forums" method="post">
         <div>
@@ -19,5 +12,4 @@
         <button type="submit">Launch</button>
       </form>
     <a href="/forums">Back to Forums</a>
-  </body>
-</html>
+<%- include ('../partials/_footer.ejs') %>
