@@ -20,7 +20,7 @@
             <% topics.forEach(topic => { %>
                 <tr>
                     <td>
-                        <h2><a href="/forums/<%= forum._id%>/<%=topic._id%>"><%= topic.title %></a></h2> <!-- consider making the parameter related to forum name once 1) duplicates are prevented and 2) admin authority required, also make sure it is lowercase-->
+                        <h2><a href="/forums/<%= forum._id%>/<%=topic._id%>"><%= topic.title %></a></h2>
                     </td>
                     <td><%= topic.createdBy %></td>
                     <td><%= topic.numPosts %></td>

@@ -1,10 +1,10 @@
-// require
+// imports
 const express = require("express")
 const router = express.Router()
 const User = require("../models/user.js")
 const bcrypt = require("bcrypt")
 
-// route handler
+// routes
 // GET /register
 router.get("/register", (req, res) => {
     res.render("auth/register.ejs")
@@ -91,5 +91,5 @@ router.get("/logout", (req, res) => {
     })
 })
 
-// export
+// exports
 module.exports = router

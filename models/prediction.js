@@ -5,13 +5,13 @@ const mongoose = require("mongoose")
 const contenderSchema = new mongoose.Schema({
     name: String,
     rank: { type: Number, min: 1, max: 5},
-    points: { type: Number}
+    points: Number
 })
 
 // schmea
 const predictionSchema = new mongoose.Schema({
-    category: { type: String },
-    user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    category: String,
+    user: String, //{ type: mongoose.Schema.Types.ObjectId, ref: "User" },
     contenders: [contenderSchema]
 })
 
