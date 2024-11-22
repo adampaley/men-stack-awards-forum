@@ -29,6 +29,7 @@ const Prediction = require("./models/prediction.js")
 // const categories = require("./data/categories2024.js")
 
 // middleware
+app.use(express.static('public')) // access CSS, Assets
 app.use(express.urlencoded({ extended: false})) // parse URL-encoded data from forms
 app.use(methodOverride("_method")) // use HTTP verbs such as PUT or DELETE
 app.use(morgan('dev')) // logging HTTP requests

@@ -1,12 +1,12 @@
 <%- include ('../partials/_header.ejs') %>
       <h1>Create a Thread</h1>
-      <form action="/forums/<%= forum %>" method="post">
-        <div>
-            <label for="title">Discussion Topic:</label>
-            <input type="text" name="title" id="title" required>
+      <form action="/forums/<%= forum %>" method="post" class="edit-form">
+        <div class="form-group">
+            <label for="title" class="form-label">Discussion Topic:</label>
+            <input type="text" name="title" id="title" required class="form-input">
         </div>
         <input type="hidden" name="createdBy" value="<%= username %>">
-        <button type="submit">Launch</button>
+        <button type="submit" class="submit-btn">Launch</button>
       </form> 
-    <a href="/forums/<%= forum %>">Back to Discussions</a>
+    <a href="/forums/<%= forum %>" class="page-links">Back to Discussions</a>
 <%- include ('../partials/_footer.ejs') %>

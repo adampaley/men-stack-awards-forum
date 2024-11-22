@@ -1,15 +1,16 @@
-<nav>
-  <p>
-    <a href="/">Home Page</a>
-    <a href="/forums"> Forums</a>
+<nav class="navbar">
+  <p class="navbar-left">
+    <a href="/" class="nav-link" id="home-link">Home Page</a>
+    <a href="/forums" class="nav-link" id="home-link"> Forums</a>
   </p>
   <% if (user) { %>
-    <p>
-      <a href="/auth/logout">Logout</a>
+    <p class="navbar-right">
+      <a href="/auth/logout" class="nav-link" id="logout-link">Logout</a>
     </p>
   <% } else { %>
-    <p>
-      <a href="/auth/register">Register</a> <a href="/auth/log-in">Log In</a>
+    <p class="navbar-right">
+      <a href="/auth/register" class="nav-link" id="register-link">Register</a> 
+      <a href="/auth/log-in" class="nav-link" id="login-link">Log In</a>
     </p>
   <% } %>
 </nav>

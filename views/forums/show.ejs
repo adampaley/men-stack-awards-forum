@@ -1,28 +1,30 @@
-
 <%- include ('../partials/_header.ejs') %>
 
     <h1><%= forum.field %></h1>
-    <h2>Topics</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>Topic</th>
-                <th>Created By</th>
-                <th>Posts</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% topics.forEach(topic => { %>
+    <h2>Topics</h2>
+    <div class="forum-table">
+        <table>
+            <thead>
                 <tr>
-                    <td>
-                        <h2><a href="/forums/<%= forum._id%>/<%=topic._id%>"><%= topic.title %></a></h2>
-                    </td>
-                    <td><%= topic.createdBy %></td>
-                    <td><%= topic.numPosts %></td>
+                    <th>Topic</th>
+                    <th>Created By</th>
+                    <th>Posts</th>
                 </tr>
-            <% }) %>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                <% topics.forEach((topic, index) => { %>
+                    <tr class="<%= index % 2 === 0 ? 'odd' : 'even' %>">
+                        <td class="topic-cell">
+                            <h2><a href="/forums/<%= forum._id %>/<%= topic._id %>"><%= topic.title %></a></h2>
+                        </td>
+                        <td class="topic-cell"><%= topic.createdBy %></td>
+                        <td class="topic-cell"><%= topic.numPosts %></td>
+                    </tr>
+                    <tr><td colspan="3"><hr class="separator"></td></tr> 
+                <% }) %>
+            </tbody>
+        </table>
+    </div>
     <% if (user) { %>
         <p>
           <a href="/forums/<%=forum._id%>/new">Add New Topic</a>
@@ -30,7 +32,7 @@
     <% } %>
     <% if (user && user.isAdmin) { %>
       <form action="/forums/<%=forum._id%>?_method=DELETE" method="post"> <!-- updated ejs if i go from id to field-->
-        <button type="submit">Delete <%= forum.field %></button>
+        <button type="submit" class="submit-btn">Delete <%= forum.field %></button>
       </form>
       <a href="/forums/<%= forum._id %>/edit">Edit <%= forum.field %></a>
     <% } %>

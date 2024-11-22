@@ -1,15 +1,15 @@
 <%- include ('../partials/_header.ejs') %>
       <h1>Launch a New Forum</h1>
-      <form action="/forums" method="post">
-        <div>
-            <label for="field">Field:</label>
-            <input type="text" name="field" id="field" required>
+      <form action="/forums" method="post" class="edit-form">
+        <div class="form-group">
+            <label for="field" class="form-label">Field:</label>
+            <input type="text" name="field" id="field" required class="form-input">
         </div>
-        <div>
-            <label for="description">A brief description:</label>
-            <textarea name="description" id="description" required maxLength="100"></textarea>
+        <div class="form-group">
+            <label for="description" class="form-label">A brief description:</label>
+            <textarea name="description" id="description" required maxLength="100" class="form-input"></textarea>
         </div>
-        <button type="submit">Launch</button>
+        <button type="submit" class="submit-btn">Launch</button>
       </form>
-    <a href="/forums">Back to Forums</a>
+    <a href="/forums" class="page-links">Back to Forums</a>
 <%- include ('../partials/_footer.ejs') %>

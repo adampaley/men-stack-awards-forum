@@ -1,12 +1,12 @@
 <%- include ('../partials/_header.ejs') %>
-    <h1>Edit <%= topic.title %></h1>      
-      <form action="/forums/<%= forumId %>/<%= topic._id %>?_method=PUT" method="POST">
-        <div>
-            <label for="title">Discussion Topic:</label>
-            <input type="text" name="title" id="title" value="<%= topic.title %>" required>
+      <h1>Edit <%= topic.title %></h1>      
+      <form action="/forums/<%= forumId %>/<%= topic._id %>?_method=PUT" method="POST" class="edit-form">
+        <div class="form-group">
+            <label for="title" class="form-label">Discussion Topic:</label>
+            <input type="text" name="title" id="title" value="<%= topic.title %>" required class="form-input">
         </div>
         <input type="hidden" name="createdBy" value="<%= username %>">
-        <button type="submit">Launch</button>
+        <button type="submit" class="submit-btn">Launch</button>
       </form> 
-    <a href="/forums/<%= forumId %>">Back to Discussions</a>
+      <a href="/forums/<%= forumId %>" class="page-links">Back to Discussions</a>
 <%- include ('../partials/_footer.ejs') %>

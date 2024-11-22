@@ -1,23 +1,25 @@
 <%- include ('../partials/_header.ejs') %>
-    <h1>Forums</h1>
+<h1>Forums</h1>
+<div class="forum-table">
     <table>
         <thead>
             <tr>
-                <th>Forum</th>
-                <th>Topics</th>
-                <th>Posts</th>
+                <th class="forum-header">Forum</th>
+                <th class="forum-header">Topics</th>
+                <th class="forum-header">Posts</th>
             </tr>
         </thead>
         <tbody>
-            <% forums.forEach(forum => { %>
-                <tr>
+            <% forums.forEach((forum, index) => { %>
+                <tr class="<%= index % 2 === 0 ? 'odd' : 'even' %>">
                     <td>
-                        <h2><a href="/forums/<%= forum._id%>"><%= forum.field %></a></h2>
-                        <p><%= forum.description %></p>
+                        <h2><a href="/forums/<%= forum._id %>"><%= forum.field %></a></h2>
+                        <p id="forum-description"><%= forum.description %></p>
                     </td>
                     <td><%= forum.numTopics %></td>
                     <td><%= forum.numPosts %></td>
                 </tr>
+                <tr><td colspan="3"><hr class="separator"></td></tr>
             <% }) %>
         </tbody>
     </table>
