@@ -1,5 +1,8 @@
 <%- include ('../partials/_header.ejs') %>
     <h1>Create a new account!</h1>
+    <% if (failedRegistration) { %>
+      <p class="messageError"><%= failedRegistration %></p>
+   <% } %>
     <form action="/auth/register" method="POST" class="auth-form">
       <div class="form-group">
         <label for="username">Username:</label>

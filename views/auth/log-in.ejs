@@ -1,5 +1,8 @@
 <%- include ('../partials/_header.ejs') %>
     <h1>Sign in</h1>
+    <% if (failedLogIn) { %>
+        <p class="messageError"><%= failedLogIn %></p>
+     <% } %>
     <form action="/auth/log-in" method="POST" class="auth-form">
       <div class="form-group">
           <label for="username">Username:</label>

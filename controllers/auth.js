@@ -8,7 +8,8 @@ const bcrypt = require("bcrypt")
 // GET /register
 router.get("/register", (req, res) => {
     const pageTitle = "Register - "
-    res.render("auth/register.ejs", { pageTitle })
+    const failedRegistration = req.query.failedRegistration
+    res.render("auth/register.ejs", { pageTitle, failedRegistration })
 })
 
 // POST /register 
@@ -16,19 +17,23 @@ router.post("/register", async (req, res) => {
     // unique username
     const userInDatabase = await User.findOne({ username: req.body.username })
     if (userInDatabase) {
-        return res.send("Username already taken")
+        const failedRegistration = "Username already taken."
+        return res.redirect(`/auth/register?failedRegistration=${failedRegistration}`)
     }
 
     // no other account
     const emailInDatabase = await User.findOne({ email: req.body.email })
     if (emailInDatabase) {
-        return res.send("Email already used")
+        const failedRegistration = "Email already used."
+        return res.redirect(`/auth/register?failedRegistration=${failedRegistration}`)
     }
 
     // password match
     if (req.body.password !== req.body.confirmPassword) {
-        return res.send("Password and Confirm Password must match")
+        const failedRegistration = "Password and Confirm Password must match."
+        return res.redirect(`/auth/register?failedRegistration=${failedRegistration}`)
     }
+
     // encryption
     const hashedPassword = bcrypt.hashSync(req.body.password, 10)
     req.body.password = hashedPassword
@@ -52,7 +57,8 @@ router.post("/register", async (req, res) => {
 // GET /log-in
 router.get("/log-in", (req, res) => {
     const pageTitle = "Log In - "
-    res.render("auth/log-in.ejs", { pageTitle })
+    const failedLogIn = req.query.failedLogIn
+    res.render("auth/log-in.ejs", { pageTitle, failedLogIn })
 })
 
 // POST /log-in
@@ -60,7 +66,9 @@ router.post("/log-in", async (req, res) => {
     // confirm it is a user
     const userInDatabase = await User.findOne({ username: req.body.username })
     if (!userInDatabase) {
-        return res.send("Login failed. Please try again.")
+        // pass error message
+        const failedLogIn = "Login failed. Please try again."
+        return res.redirect(`/auth/log-in?failedLogIn=${failedLogIn}`)
     }
     // test password with bcrypt
     const validPassword = bcrypt.compareSync(
@@ -68,7 +76,9 @@ router.post("/log-in", async (req, res) => {
         userInDatabase.password
     )
     if (!validPassword) {
-        return res.send("Login failed. Please try again.")
+        // pass error message
+        const failedLogIn = "Login failed. Please try again."
+        return res.redirect(`/auth/log-in?failedLogIn=${failedLogIn}`)
     }
     // session data
     req.session.user = {
