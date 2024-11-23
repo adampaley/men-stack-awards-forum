@@ -3,13 +3,14 @@ const express = require("express")
 const router = express.Router()
 const User = require("../models/user.js")
 const bcrypt = require("bcrypt")
+const morgan = require("morgan")
 
 // routes
 // GET /register
 router.get("/register", (req, res) => {
     const pageTitle = "Register - "
     const failedRegistration = req.query.failedRegistration
-    res.render("auth/register.ejs", { pageTitle, failedRegistration })
+    res.render("auth/register.ejs", { pageTitle, failedRegistration, returnTo: req.session.returnTo })
 })
 
 // POST /register 
@@ -50,7 +51,7 @@ router.post("/register", async (req, res) => {
       
     // asynchronous pattern
     req.session.save(() => {
-      res.redirect("/")
+      res.redirect(`${returnTo}`)
     })
 })
 
@@ -58,7 +59,8 @@ router.post("/register", async (req, res) => {
 router.get("/log-in", (req, res) => {
     const pageTitle = "Log In - "
     const failedLogIn = req.query.failedLogIn
-    res.render("auth/log-in.ejs", { pageTitle, failedLogIn })
+    const returnTo = req.session.returnTo
+    res.render("auth/log-in.ejs", { pageTitle, failedLogIn, returnTo: req.session.returnTo })
 })
 
 // POST /log-in
