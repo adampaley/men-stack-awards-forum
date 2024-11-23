@@ -1,4 +1,5 @@
 # Awards Forum
+![landing page](./public/assets/hero.png)
 
 Awards Forum is a discussion forum for entertainment industry awards prognostication, inspired by GoldDerby, that utilizes the MEN stack and created as an assignment for a General Assembly Software Engineering Bootcamp.
 
