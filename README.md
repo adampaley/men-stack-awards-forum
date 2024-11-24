@@ -1,7 +1,7 @@
 # Awards Forum
 ![landing page](./public/assets/hero.png)
 
-Awards Forum is a discussion forum for entertainment industry awards prognostication, inspired by GoldDerby, that utilizes the MEN stack and created as an assignment for a General Assembly Software Engineering Bootcamp.
+[Awards Forum](https://awards-forum-c36b0ddce5e7.herokuapp.com/) is a discussion forum for entertainment industry awards prognostication, inspired by GoldDerby, that utilizes the MEN stack and created as an assignment for a General Assembly Software Engineering Bootcamp.
 
 ### Why I Chose This Application
 
@@ -9,7 +9,9 @@ When deciding on a project, I wanted an opportunity to relate my interests to th
 
 ### How To Use
 
-Awards Forum follows basic CRUD operations using RESTful routing conventions to allow authenticated-users the ability to create conversation topics and contribute to conversations. Any gues can read a thread, but only users can open new threads, edit or delete threads they have created, post comments, and edit or delete comment they have made.
+Awards Forum follows basic CRUD operations using RESTful routing conventions to allow authenticated-users the ability to create conversation topics and contribute to conversations. Any guest can read a thread, but only users can open new threads, edit or delete threads they have created, post comments, and edit or delete comment they have made.
+
+Come join the conversation: https://awards-forum-c36b0ddce5e7.herokuapp.com/
 
 ## Technologies Used
 The following languages, technologies, framewords, and libraries were implemented to create this game: 
