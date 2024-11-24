@@ -17,7 +17,7 @@ const topicSchema = new mongoose.Schema({
 })
 
 const forumSchema = new mongoose.Schema({
-    field: { type: String, required: true, unique: true, min: 1, trim: true }, // need to catch error for if a field is repeated, will generate an error because of "unique"
+    field: { type: String, required: true, unique: true, min: 1, trim: true },
     description: { type: String, required: true, trim: true },
     numTopics: { type: Number, default: 0 },
     numPosts: { type: Number, default: 0 },
@@ -61,26 +61,3 @@ const Post = mongoose.model('Post', postSchema)
 
 // export
 module.exports = { Forum, Topic, Post }
-
-// // update post count
-// topicSchema.methods.updatePostCount = async function() {
-//     let postCount = 0
-    
-//     this.topics.forEach(topic => {
-//         postCount += topic.posts.length
-//     })
-    
-//     this.numPosts = postCount
-//     await this.save()
-// }
-
-// // make updates automatic
-// topicSchema.pre('save', async function(next) {
-//     if (this.isModified('numTopics')) {
-//         await this.updateTopicCount()
-//     }
-//     if (this.isModified('numPosts')) {
-//         await this.updatePostCount()
-//     }
-//     next()
-// })

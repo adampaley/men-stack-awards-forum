@@ -5,13 +5,13 @@ const { Forum, Topic } = require("../models/forum.js")
 const User = require('../models/user.js')
 const isAdmin = require("../middleware/is-admin.js")
 const isLoggedIn = require("../middleware/is-logged-in.js")
-const allowPagination = require('../middleware/pagination');
+const allowPagination = require('../middleware/pagination')
 
 // routes
 
 // forums
 // GET /forums
-router.get("/", async (req, res) => {
+router.get("/",  async (req, res) => {
     const allForums = await Forum.find()
     const pageTitle = "Forums - "
     res.render("forums/index.ejs", { forums: allForums, pageTitle })

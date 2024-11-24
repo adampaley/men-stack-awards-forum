@@ -25,7 +25,7 @@ The following languages, technologies, framewords, and libraries were implemente
 
 
 # Attribution
-* Trophy FavIcon - <a href="https://www.freepik.com/premium-vector/gold-trophy-icon-transparent-background_21213228.htm"/>Freepik</a>
+* Trophy FavIcon - <a href="https://www.flaticon.com/free-icons/ui" title="ui icons">Ui icons created by Rhendi Renaldy - Flaticon</a>
 
 # Level Up
 Potential features to be added on:

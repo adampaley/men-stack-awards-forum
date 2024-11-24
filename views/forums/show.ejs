@@ -31,7 +31,7 @@
         </p>
     <% } %>
     <% if (user && user.isAdmin) { %>
-      <form action="/forums/<%=forum._id%>?_method=DELETE" method="post"> <!-- updated ejs if i go from id to field-->
+      <form action="/forums/<%=forum._id%>?_method=DELETE" method="post">
         <button type="submit" class="submit-btn">Delete <%= forum.field %></button>
       </form>
       <a href="/forums/<%= forum._id %>/edit">Edit <%= forum.field %></a>

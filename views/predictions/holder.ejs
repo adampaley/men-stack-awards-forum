@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8">
@@ -34,17 +34,17 @@
                 <option value="Wicked"></option>
                 <option value="The Wild Robot></option>
               </datalist>
-            <!-- <select name="category" id="category">
+            <select name="category" id="category">
                 <% for (const category in categories) { %>
                     <option value=""><%= category %></option>
                 <% }%>
-            </select> -->
+            </select> 
         </div>
         <div>
             <h3>Rank the top 5 contenders:</h3>
             <label for="rank">Rank:</label>
             <input type="number" name="rank" id="rank"  min="1" max="5">
-            <!-- <% categories[Object.keys(categories)[0]].forEach((contender, index) => { %>
+            <% categories[Object.keys(categories)[0]].forEach((contender, index) => { %>
                 <% if (index < 5) { %>
                     <label for="rank<%= index + 1 %>"><%= contender %></label>
                     <input type="number" name="rank<%= index + 1 %>" min="1" max="5" required><br>
@@ -52,8 +52,8 @@
                     <label for="rank<%= index + 1 %>"><%= contender %></label>
                     <input type="number" name="rank<%= index + 1 %>" min="1" max="5" ><br>
                 <% } %>
-            <% }) %> -->
+            <% }) %> 
         </div>
         <button type="submit">Submit Predictions</button>
     </form>
- <%- include ('../partials/_footer.ejs') %>
+ <%- include ('../partials/_footer.ejs') %> -->

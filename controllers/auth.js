@@ -10,7 +10,7 @@ const morgan = require("morgan")
 router.get("/register", (req, res) => {
     const pageTitle = "Register - "
     const failedRegistration = req.query.failedRegistration
-    res.render("auth/register.ejs", { pageTitle, failedRegistration, returnTo: req.session.returnTo })
+    res.render("auth/register.ejs", { pageTitle, failedRegistration })
 })
 
 // POST /register 
@@ -59,8 +59,7 @@ router.post("/register", async (req, res) => {
 router.get("/log-in", (req, res) => {
     const pageTitle = "Log In - "
     const failedLogIn = req.query.failedLogIn
-    const returnTo = req.session.returnTo
-    res.render("auth/log-in.ejs", { pageTitle, failedLogIn, returnTo: req.session.returnTo })
+    res.render("auth/log-in.ejs", { pageTitle, failedLogIn })
 })
 
 // POST /log-in
