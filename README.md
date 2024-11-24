@@ -23,7 +23,9 @@ The following languages, technologies, framewords, and libraries were implemente
 ![EJS](https://img.shields.io/badge/ejs.svg-%236A3D91%20?style=for-the-badge&logo=ejs&logoColor=%23B4CA65)
 ![Node.js](https://img.shields.io/badge/NODE.JS-%23F28D72.svg?style=for-the-badge&logo=Node.js)
 ![MongoDB](https://img.shields.io/badge/MongoDB-%23F28D73.svg?style=for-the-badge&logo=mongodb)
-![Express](https://img.shields.io/badge/EXPRESS-%23000000.svg?style=for-the-badge&logo=express)
+![Express.js](https://img.shields.io/badge/EXPRESS-%23000000.svg?style=for-the-badge&logo=express)
+![Mongoose](https://img.shields.io/badge/Mongoose-%23F04D35?style=for-the-badge&logo=mongoosedotws&logoColor=white)
+![Heroku](https://img.shields.io/badge/heroku-%23430098?style=for-the-badge)
 
 
 # Attribution

@@ -51,7 +51,7 @@ router.post("/register", async (req, res) => {
       
     // asynchronous pattern
     req.session.save(() => {
-      res.redirect(`${returnTo}`)
+      res.redirect("/")
     })
 })
 
