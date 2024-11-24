@@ -59,6 +59,6 @@ app.use("/forums", forumController)
 // app.use("/predictions", predictionController)
 
 // listen
-app.listen(PORT, () => {
+app.listen(port, () => {
     console.log(`Listening on port ${port}`)
 })
